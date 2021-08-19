@@ -4,13 +4,16 @@ const axios = require('axios');
 
 Vue.use(Vuex)
 
+const defaultData = {
+  data: null,
+  loading: null,
+  error: null
+}
+
 export default new Vuex.Store({
   state: {
-    events : {
-      data: null,
-      loading: null,
-      error: null
-    }
+    events : {...defaultData},
+    eventItem: {...defaultData}
   },
   mutations: {
     setEvents(state, value){
@@ -21,23 +24,67 @@ export default new Vuex.Store({
     },
     setEventsLoading(state, value){
       state.events.loading = value
+    },
+
+    setEventItem(state, value){
+      state.eventItem.data = value
+    },
+    setEventItemError(state, value){
+      state.eventItem.error = value
+    },
+    setEventItemLoading(state, value){
+      state.eventItem.loading = value
     }
+
   },
   actions: {
     async fetchEvents({commit}){
       commit('setEventsLoading', true)
       try {
-        const events = await axios.get('https://opendata.paris.fr/api/records/1.0/search/?dataset=que-faire-a-paris-&q=&facet=category&facet=tags&facet=address_name&facet=address_zipcode&facet=address_city&facet=pmr&facet=blind&facet=deaf&facet=access_type&facet=price_type')
+        const events = await axios.get('http://localhost:3000/tourism/points')
         console.log('events:')
         console.log(events)
-        commit('setEvents', events.data.records)
+        commit('setEvents', events.data.features.slice(-100))
         commit('setEventsLoading', false)
       } catch (error) {
         commit('setEventsError', error)
         commit('setEventsLoading', false)
       }
-    }
+    },
+
+    async fetchEventsSorted({commit},value){
+      commit('setEventsLoading', true)
+      try {
+        const eventsSorted = await axios.get(`http://localhost:3000/tourism/points/themes/${value}`, {
+ 
+        })
+        console.log('eventsSorted:')
+        console.log(eventsSorted)
+        commit('setEvents', eventsSorted.data.features.slice(-100))
+        commit('setEventsLoading', false)
+      } catch (error) {
+        commit('setEventsError', error)
+        commit('setEventsLoading', false)
+      }
+    },
+
+    async fetchEventItem({commit}, itemId){
+      commit('setEventItemLoading', true)
+      try {
+        console.log('itemId')
+        console.log(itemId)
+        const event = await axios.get(`http://localhost:3000/tourism/points/${itemId}`)
+        console.log('event:')
+        console.log(event)
+        commit('setEventItem', event.data.properties)
+        commit('setEventItemLoading', false)
+      } catch (error) {
+        commit('setEventItemError', error)
+        commit('setEventItemLoading', false)
+      }
+    },
   },
+ 
   modules: {
   }
 })

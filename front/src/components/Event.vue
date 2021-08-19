@@ -13,7 +13,7 @@
     {{description}}
     {{price}}
   </b-card-text>
-  <b-button :href="url">Plus d'info</b-button>
+  <b-button @click="getItem(id)">Plus d'info</b-button>
    </b-card>
   </div>
 </template>
@@ -22,12 +22,13 @@
 export default {
   name: 'Event',
   props: {
+    id: String,
     link: String,
     address_city: String,
     address_name: String,
     address_street: String,
     address_zipcode: String,
-    category: String,
+    category: Array,
     facebook: String,
     twitter: String,
     cover_url: String,
@@ -39,7 +40,12 @@ export default {
     price: String,
     title: String,
     url: String,
-  }
+  },
+  methods: {
+    getItem(id){
+      this.$router.push({name:`Point`, params:{id : id}})
+    }
+  },
 }
 </script>
 

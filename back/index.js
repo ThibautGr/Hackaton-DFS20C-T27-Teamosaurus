@@ -1,7 +1,9 @@
 const express = require('express');
 const app = express();
 const data = require('./data/apd_apidae.apdlieutourisme_latest.json');
+const cors = require('cors')
 
+app.use(cors())
 
 app.get('/tourism/points', (req,res) => {
     res.status(200).json(data)
