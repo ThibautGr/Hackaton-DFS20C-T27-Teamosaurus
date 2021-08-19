@@ -4,12 +4,11 @@
             <img class="header_logo" src="../assets/logo.png" alt="logo">
             <h1 class="text-white">ONLYON</h1>
         </div>
-        
     </div>
 </template>
 <script>
 export default {
-    name:'Header'
+    name:'Header',
 }
 </script>
 <style>
