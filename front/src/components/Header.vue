@@ -1,14 +1,21 @@
-<template>
-    <div class="background-gradient header d-flex">
+<template lang="en">
+    <div class="background-gradient header d-flex align-items-center justify-content-between">
         <div class="d-flex align-items-center">
             <img class="header_logo" src="../assets/logo.png" alt="logo">
             <h1 class="text-white">ONLYON</h1>
         </div>
+        <div>
+            <Sidebar/>
+        </div>
     </div>
 </template>
 <script>
+import Sidebar from './Sidebar';
 export default {
     name:'Header',
+    components:{
+        Sidebar
+    }
 }
 </script>
 <style>
